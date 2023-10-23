@@ -21,7 +21,7 @@ class Engine:
             return self.evaluate_board(board, depth), None
 
         if ai_turn:
-            max_eval = float('-inf')
+            max_eval = float('inf')
             best_move = None
             for move in available_moves:
                 board.push(move, self.ai)
@@ -35,7 +35,7 @@ class Engine:
                     return max_eval, best_move
             return max_eval, best_move
         else:
-            min_eval = float('inf')
+            min_eval = float('-inf')
             best_move = None
             for move in available_moves:
                 board.push(move, self.foe)
