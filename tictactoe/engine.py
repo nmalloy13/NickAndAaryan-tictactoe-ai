@@ -21,33 +21,33 @@ class Engine:
             return self.evaluate_board(board, depth), None
 
         if ai_turn:
-            max_eval = float('-inf')
+            min_eval = float('-inf')
             best_move = None
             for move in available_moves:
                 board.push(move, self.ai)
                 eval_ = self.minimax(board, False, depth + 1, alpha, beta)[0]
                 board.undo(move)
-                max_eval = max(max_eval, eval_)
-                if max_eval == eval_:
+                min_eval = min(min_eval, eval_)
+                if min_eval == eval_:
                     best_move = move
-                alpha = max(alpha, max_eval)
+                alpha = min(alpha, min_eval)
                 if alpha > beta:
-                    return max_eval, best_move
-            return max_eval, best_move
+                    return min_eval, best_move
+            return min_eval, best_move
         else:
-            min_eval = float('inf')
+            max_eval = float('inf')
             best_move = None
             for move in available_moves:
                 board.push(move, self.foe)
                 eval_ = self.minimax(board, True, depth + 1, alpha, beta)[0]
                 board.undo(move)
-                min_eval = min(min_eval, eval_)
-                if min_eval == eval_:
+                max_eval = max(max_eval, eval_)
+                if max_eval == eval_:
                     best_move = move
-                beta = min(min_eval, beta)
+                beta = min(max_eval, beta)
                 if beta < alpha:
-                    return min_eval, best_move
-            return min_eval, best_move
+                    return max_eval, best_move
+            return max_eval, best_move
 
     def evaluate_board(self, board: Board, depth: int) -> Score:
         if board.winner() == self.ai:
