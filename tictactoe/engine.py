@@ -27,10 +27,10 @@ class Engine:
                 board.push(move, self.ai)
                 eval_ = self.minimax(board, False, depth + 1, alpha, beta)[0]
                 board.undo(move)
-                max_eval = max(max_eval, eval_)
+                max_eval = min(max_eval, eval_)
                 if max_eval == eval_:
                     best_move = move
-                alpha = max(alpha, max_eval)
+                alpha = min(alpha, max_eval)
                 if alpha > beta:
                     return max_eval, best_move
             return max_eval, best_move
@@ -41,18 +41,18 @@ class Engine:
                 board.push(move, self.foe)
                 eval_ = self.minimax(board, True, depth + 1, alpha, beta)[0]
                 board.undo(move)
-                min_eval = min(min_eval, eval_)
+                min_eval = max(min_eval, eval_)
                 if min_eval == eval_:
                     best_move = move
-                beta = min(min_eval, beta)
+                beta = max(min_eval, beta)
                 if beta < alpha:
                     return min_eval, best_move
             return min_eval, best_move
 
     def evaluate_board(self, board: Board, depth: int) -> Score:
-        if board.winner() == self.ai:
+        if board.winner() == self.foe:
             return board.size**2 - depth
-        elif board.winner() == self.foe:
+        elif board.winner() == self.ai:
             return -1 * board.size**2 - depth
         return 0
 
